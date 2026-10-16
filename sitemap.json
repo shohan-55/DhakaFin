@@ -1,0 +1,492 @@
+[
+  {
+    "slug": "explore",
+    "title": "Explore the platform",
+    "kind": "hub",
+    "group": "Explore",
+    "desc": "One connected destination for advisory expertise, tax technology, law research, and the DhakaFin digital workspace."
+  },
+  {
+    "slug": "services",
+    "title": "Advisory services",
+    "kind": "service_hub",
+    "group": "Advisory",
+    "desc": "Financial expertise for businesses, individuals and organisations—presented with clarity and purpose."
+  },
+  {
+    "slug": "tools",
+    "title": "Digital tools",
+    "kind": "tool_hub",
+    "group": "Digital Tools",
+    "desc": "Explore interface previews for every planned DhakaFin tax, VAT and compliance tool."
+  },
+  {
+    "slug": "tax-research",
+    "title": "Tax knowledge center",
+    "kind": "research_hub",
+    "group": "Tax Research",
+    "desc": "Income Tax Act, structured research, AI-assisted exploration and official circular references."
+  },
+  {
+    "slug": "accounting",
+    "title": "Accounting & bookkeeping",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Organised records, management accounts and meaningful business reporting."
+  },
+  {
+    "slug": "financial-reporting",
+    "title": "Financial reporting & IFRS",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Financial statements, reporting packs, and thoughtful disclosures."
+  },
+  {
+    "slug": "personal-tax-service",
+    "title": "Personal tax advisory",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "A clear path through your individual tax obligations and returns."
+  },
+  {
+    "slug": "corporate-tax-service",
+    "title": "Corporate tax advisory",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Company tax compliance, return preparation and planning support."
+  },
+  {
+    "slug": "vat-compliance",
+    "title": "VAT & regulatory compliance",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Practical support around VAT returns, Mushak documentation and obligations."
+  },
+  {
+    "slug": "audit-assurance",
+    "title": "Audit & assurance support",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Audit readiness, reconciliations and evidence-led documentation."
+  },
+  {
+    "slug": "internal-audit",
+    "title": "Internal audit",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Operational assurance, internal controls and risk-informed improvements."
+  },
+  {
+    "slug": "vcfo",
+    "title": "Virtual CFO",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Forward-looking decision support for founders and leadership teams."
+  },
+  {
+    "slug": "payroll",
+    "title": "Payroll & withholding",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Clearer payroll workflows, withholding records and TDS/VDS documentation."
+  },
+  {
+    "slug": "cost-efficiency",
+    "title": "Cost efficiency review",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Find clarity in cost drivers, processes, and performance opportunities."
+  },
+  {
+    "slug": "business-advisory",
+    "title": "Business advisory",
+    "kind": "service",
+    "group": "Advisory",
+    "desc": "Finance-led thinking for growth, investment, and operational choices."
+  },
+  {
+    "slug": "calculator",
+    "title": "Tax calculator overview",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Choose a personal, company or at-source tax experience."
+  },
+  {
+    "slug": "personal-tax",
+    "title": "Personal income tax calculator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Explore a personal tax assessment interface before live rules are connected."
+  },
+  {
+    "slug": "corporate-tax",
+    "title": "Corporate tax calculator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Build a corporate tax computation preview with clearly grouped inputs."
+  },
+  {
+    "slug": "tds-calculator",
+    "title": "TDS calculator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Explore withholding tax selection and amount-entry screens."
+  },
+  {
+    "slug": "vds-calculator",
+    "title": "VDS calculator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Preview VAT deduction at source workflow and documentation."
+  },
+  {
+    "slug": "vat-calculator",
+    "title": "VAT calculator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Preview tax-exclusive and tax-inclusive VAT input experiences."
+  },
+  {
+    "slug": "mushak-6-3",
+    "title": "Mushak 6.3 invoice creator",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "A polished VAT invoice interface with item lines and preview controls."
+  },
+  {
+    "slug": "vat-return",
+    "title": "VAT return / Mushak 9.1",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "A structured monthly VAT-return workspace design."
+  },
+  {
+    "slug": "tax-deadlines",
+    "title": "Tax deadline tracker",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "Stay organised with a timeline of configurable compliance tasks."
+  },
+  {
+    "slug": "tax-rates",
+    "title": "Tax rate reference",
+    "kind": "tool",
+    "group": "Digital Tools",
+    "desc": "A clear way to browse source-tax and VAT rate references."
+  },
+  {
+    "slug": "ai-tax-search",
+    "title": "AI tax law search",
+    "kind": "ai",
+    "group": "Tax Research",
+    "desc": "A research-first interface for questions, citations and source context."
+  },
+  {
+    "slug": "tax-act",
+    "title": "Income Tax Act reader",
+    "kind": "reader",
+    "group": "Tax Research",
+    "desc": "Browse legislation by book, chapter and section."
+  },
+  {
+    "slug": "tax-act-section",
+    "title": "Tax Act section detail",
+    "kind": "reader_detail",
+    "group": "Tax Research",
+    "desc": "A distraction-free reading experience with citations and bookmarks."
+  },
+  {
+    "slug": "tax-library",
+    "title": "Tax library",
+    "kind": "library",
+    "group": "Tax Research",
+    "desc": "Browse acts, notices, legal resources and curated reference material."
+  },
+  {
+    "slug": "circulars",
+    "title": "Circulars & SRO",
+    "kind": "library",
+    "group": "Tax Research",
+    "desc": "Research public notices, circulars and statutory regulatory orders."
+  },
+  {
+    "slug": "tax-search-results",
+    "title": "Tax search results",
+    "kind": "library",
+    "group": "Tax Research",
+    "desc": "Filter through a structured demonstration list of legal references."
+  },
+  {
+    "slug": "insights",
+    "title": "Insights & articles",
+    "kind": "blog",
+    "group": "Company",
+    "desc": "Articles and perspectives on finance, tax and business decisions."
+  },
+  {
+    "slug": "insight-detail",
+    "title": "Article detail",
+    "kind": "article",
+    "group": "Company",
+    "desc": "A polished editorial reading experience for DhakaFin publications."
+  },
+  {
+    "slug": "about",
+    "title": "About DhakaFin",
+    "kind": "about",
+    "group": "Company",
+    "desc": "Expertise, thoughtfulness and digital clarity—all under one identity."
+  },
+  {
+    "slug": "team",
+    "title": "The team",
+    "kind": "team",
+    "group": "Company",
+    "desc": "Meet the expertise behind financial clarity."
+  },
+  {
+    "slug": "team-profile",
+    "title": "Professional profile",
+    "kind": "profile",
+    "group": "Company",
+    "desc": "A professional profile page for team experience and qualifications."
+  },
+  {
+    "slug": "contact",
+    "title": "Contact DhakaFin",
+    "kind": "contact",
+    "group": "Company",
+    "desc": "Start a conversation about your next financial decision."
+  },
+  {
+    "slug": "consultation",
+    "title": "Book a consultation",
+    "kind": "consultation",
+    "group": "Company",
+    "desc": "Choose a service and preview a consultation request form."
+  },
+  {
+    "slug": "login",
+    "title": "Sign in",
+    "kind": "auth",
+    "group": "Account",
+    "desc": "A streamlined secure-looking access experience; authentication is not connected."
+  },
+  {
+    "slug": "register",
+    "title": "Create an account",
+    "kind": "auth",
+    "group": "Account",
+    "desc": "Onboarding screens for future DhakaFin clients."
+  },
+  {
+    "slug": "forgot-password",
+    "title": "Reset password",
+    "kind": "auth",
+    "group": "Account",
+    "desc": "A preview of the account recovery journey."
+  },
+  {
+    "slug": "verify-email",
+    "title": "Verify email",
+    "kind": "auth",
+    "group": "Account",
+    "desc": "An email confirmation step prepared for future authentication."
+  },
+  {
+    "slug": "client-dashboard",
+    "title": "Client overview",
+    "kind": "client_dashboard",
+    "group": "Client Workspace",
+    "desc": "A clear home for personal and business financial activity."
+  },
+  {
+    "slug": "documents",
+    "title": "Document vault",
+    "kind": "documents",
+    "group": "Client Workspace",
+    "desc": "An organised place for financial and tax records."
+  },
+  {
+    "slug": "mushak-list",
+    "title": "Mushak invoices",
+    "kind": "table",
+    "group": "Client Workspace",
+    "desc": "Browse drafts, submitted invoices, and archived records."
+  },
+  {
+    "slug": "mushak-detail",
+    "title": "Invoice details",
+    "kind": "invoice",
+    "group": "Client Workspace",
+    "desc": "View a demonstration Mushak invoice with print-like composition."
+  },
+  {
+    "slug": "submissions",
+    "title": "Tax submissions",
+    "kind": "table",
+    "group": "Client Workspace",
+    "desc": "Track planned and completed tax-related workstreams."
+  },
+  {
+    "slug": "reports",
+    "title": "Reports & analytics",
+    "kind": "analytics",
+    "group": "Client Workspace",
+    "desc": "Explore finance reports, charts, and structured performance snapshots."
+  },
+  {
+    "slug": "notifications",
+    "title": "Notifications",
+    "kind": "notifications",
+    "group": "Client Workspace",
+    "desc": "Follow important updates and due dates in one organised feed."
+  },
+  {
+    "slug": "account-settings",
+    "title": "Account settings",
+    "kind": "settings",
+    "group": "Client Workspace",
+    "desc": "Preferences and personal information panels for the future portal."
+  },
+  {
+    "slug": "admin-dashboard",
+    "title": "Admin overview",
+    "kind": "admin_dashboard",
+    "group": "Admin Studio",
+    "desc": "A modern operations overview for DhakaFin administrators."
+  },
+  {
+    "slug": "admin-homepage",
+    "title": "Homepage manager",
+    "kind": "admin_form",
+    "group": "Admin Studio",
+    "desc": "Edit homepage hero copy, featured tools, and promotional content."
+  },
+  {
+    "slug": "admin-blog",
+    "title": "Blog manager",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "Create, organise and preview articles for publication."
+  },
+  {
+    "slug": "admin-deadlines",
+    "title": "Deadline manager",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "Maintain the interface for tax deadlines and compliance notices."
+  },
+  {
+    "slug": "admin-library",
+    "title": "Legal library manager",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "Organise books, chapters and sections for the tax research library."
+  },
+  {
+    "slug": "admin-tax-rates",
+    "title": "Tax rate manager",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "Review data-management interfaces for source-tax and VAT rates."
+  },
+  {
+    "slug": "admin-portfolio",
+    "title": "Team & portfolio manager",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "Maintain team profiles, services and professional biographies."
+  },
+  {
+    "slug": "admin-messages",
+    "title": "Messages",
+    "kind": "admin_table",
+    "group": "Admin Studio",
+    "desc": "A unified inbox design for service enquiries and contact requests."
+  },
+  {
+    "slug": "admin-footer",
+    "title": "Footer manager",
+    "kind": "admin_form",
+    "group": "Admin Studio",
+    "desc": "Manage navigation columns, contact links and legal footer content."
+  },
+  {
+    "slug": "admin-settings",
+    "title": "Site settings",
+    "kind": "admin_form",
+    "group": "Admin Studio",
+    "desc": "Adjust branding, typography, preview assets and site details."
+  },
+  {
+    "slug": "admin-auth",
+    "title": "Access settings",
+    "kind": "admin_form",
+    "group": "Admin Studio",
+    "desc": "An interface for future administrative security settings."
+  },
+  {
+    "slug": "admin-library-workflow",
+    "title": "Library workflow",
+    "kind": "admin_dashboard",
+    "group": "Admin Studio",
+    "desc": "See the editorial review stages for tax research content."
+  },
+  {
+    "slug": "admin-library-analytics",
+    "title": "Library analytics",
+    "kind": "analytics",
+    "group": "Admin Studio",
+    "desc": "Preview engagement trends and publishing activity reports."
+  },
+  {
+    "slug": "corporate-companies",
+    "title": "Corporate companies",
+    "kind": "audience",
+    "group": "Who We Serve",
+    "desc": "Purpose-built advisory interfaces for boards, finance teams and growing corporate organisations."
+  },
+  {
+    "slug": "startups-smes",
+    "title": "Startups & SMEs",
+    "kind": "audience",
+    "group": "Who We Serve",
+    "desc": "Foundational finance, reporting and practical tax guidance for emerging businesses."
+  },
+  {
+    "slug": "individual-taxpayers",
+    "title": "Individual taxpayers",
+    "kind": "audience",
+    "group": "Who We Serve",
+    "desc": "A clearer personal journey for tax returns, documentation and financial records."
+  },
+  {
+    "slug": "ngos-nonprofits",
+    "title": "NGOs & nonprofits",
+    "kind": "audience",
+    "group": "Who We Serve",
+    "desc": "Reporting, controls and compliance approaches for mission-driven organisations."
+  },
+  {
+    "slug": "privacy",
+    "title": "Privacy & data principles",
+    "kind": "legal",
+    "group": "Company",
+    "desc": "A clear preview of the privacy information and data practices a future live service must publish."
+  },
+  {
+    "slug": "terms",
+    "title": "Terms & service principles",
+    "kind": "legal",
+    "group": "Company",
+    "desc": "A design preview of terms, boundaries and the distinction between tools and professional advice."
+  },
+  {
+    "slug": "accessibility",
+    "title": "Accessibility & inclusive design",
+    "kind": "legal",
+    "group": "Company",
+    "desc": "Our approach to a more accessible, readable and usable digital financial experience."
+  }
+]

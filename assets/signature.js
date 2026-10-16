@@ -1,0 +1,6 @@
+(()=>{'use strict';
+const q=(s,r=document)=>r.querySelector(s);const qa=(s,r=document)=>[...r.querySelectorAll(s)];
+const trigger=q('[data-v2-menu]'), panel=q('#v2-mobile');if(trigger&&panel){trigger.addEventListener('click',()=>{let open=panel.classList.toggle('open');trigger.setAttribute('aria-expanded',open?'true':'false');trigger.setAttribute('aria-label',open?'Close navigation':'Open navigation')});document.addEventListener('keydown',e=>{if(e.key==='Escape'){panel.classList.remove('open');trigger.setAttribute('aria-expanded','false')}})}
+qa('[data-fill-demo]').forEach(btn=>btn.addEventListener('click',()=>{const f=btn.closest('form');if(!f)return;qa('input:not([type=hidden]),select,textarea',f).forEach(el=>{if(el.type==='checkbox')el.checked=true;else if(el.tagName==='SELECT'){if(el.options.length>1)el.selectedIndex=1;}else if(el.type==='number')el.value='125000';else if(el.type==='date')el.value='2026-10-01';else if(el.type==='month')el.value='2026-10';else if(el.type==='email')el.value='demo@example.com';else if(el.type==='text')el.value='Demo reference — not verified';});const x=q('.form-response',f);if(x)x.textContent='Example inputs entered. Submit to preview the workflow; no calculation or data submission occurs.';}));
+// Explicitly non-functional routes are connected through visual pages; no network calls.
+})();
