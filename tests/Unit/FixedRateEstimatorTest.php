@@ -25,13 +25,13 @@ class FixedRateEstimatorTest extends TestCase
 
     public function test_invalid_bdt_input_is_rejected(): void
     {
-        $this->expectException(InvalidArgumentException);
+        $this->expectException(InvalidArgumentException::class);
         (new FixedRateEstimator())->calculate('123.456', 500);
     }
 
     public function test_rate_over_100_percent_is_rejected(): void
     {
-        $this->expectException(InvalidArgumentException);
+        $this->expectException(InvalidArgumentException::class);
         (new FixedRateEstimator())->calculate('100.00', 10001);
     }
 }
