@@ -17,6 +17,8 @@ class PublicPagesTest extends TestCase
             'services', 'client-services', 'consultation', 'terms',
             'accessibility', 'personal-tax', 'corporate-tax',
             'ai-tax-search', 'tools', 'tds-calculator', 'privacy',
+            'vat-calculator', 'mushak-6-3', 'tax-act', 'circulars',
+            'tax-deadlines', 'vcfo', 'about', 'contact',
         ];
 
         foreach ($pages as $page) {
