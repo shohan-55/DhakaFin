@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminNoticeController;
 use App\Http\Controllers\AdminDeadlineController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminLegalSourceController;
+use App\Http\Controllers\AdminTaxRateRuleController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -33,5 +34,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::resource('deadlines', AdminDeadlineController::class)->except('show');
         Route::resource('posts', AdminPostController::class)->except('show');
         Route::resource('legal-sources', AdminLegalSourceController::class)->except('show');
+        Route::resource('tax-rates', AdminTaxRateRuleController::class)->except('show');
     });
 });
