@@ -61,6 +61,7 @@ return [
         'notices' => env('DHAKAFIN_NOTICES_ENABLED', false),
         'deadlines' => env('DHAKAFIN_DEADLINES_ENABLED', false),
         'tax_rates' => env('DHAKAFIN_TAX_RATES_ENABLED', false),
+        'blog' => env('DHAKAFIN_BLOG_ENABLED', false),
     ],
     'feature_pages' => [
         'tds-calculator' => 'tds_calculator',
