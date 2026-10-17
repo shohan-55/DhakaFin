@@ -39,6 +39,7 @@ final class StaticPageController
         }
 
         $html = view('pages.' . $page)->render();
+        $html = str_ireplace('</head>', \App\Support\FeatureManifest::tag() . '</head>', $html);
         $script = '<script src="/assets/dhakafin-integration.js" defer></script>';
         $html = preg_replace('~</body\s*>~i', $script . '</body>', $html, 1, $replacements);
 
