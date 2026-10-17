@@ -1,9 +1,6 @@
 name: DhakaFin Visual Parity
 
 on:
-  push:
-    branches:
-      - audit/laravel-conversion-20261017
   workflow_dispatch:
 
 permissions:
