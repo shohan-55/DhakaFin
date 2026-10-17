@@ -28,7 +28,13 @@ final class PublicTaxEstimatorController
             'tax_type' => ['required', Rule::in(['tds', 'vds', 'vat'])],
             'rate_rule_id' => ['required', 'integer', 'min:1'],
             'amount_bdt' => ['required', 'string', 'regex:/\A(0|[1-9][0-9]{0,11})(?:\.[0-9]{1,2})?\z/D'],
+            'amount_mode' => ['sometimes', Rule::in(['exclusive', 'inclusive'])],
         ]);
+
+        $mode = $data['amount_mode'] ?? 'exclusive';
+        if ($mode === 'inclusive' && $type !== 'vat') {
+            return response()->json(['message' => 'Inclusive amount mode is supported only for VAT.'], 422);
+        }
 
         $today = today(config('app.timezone'));
 
@@ -45,7 +51,7 @@ final class PublicTaxEstimatorController
             })
             ->firstOrFail();
 
-        $result = $calculator->calculate($data['amount_bdt'], $rule->rate_basis_points);
+        $result = $calculator->calculate($data['amount_bdt'], $rule->rate_basis_points, $mode);
 
         return response()->json([
             'tax_type' => $rule->tax_type,
