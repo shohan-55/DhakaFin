@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Deadline;
 use App\Models\Notice;
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 
 final class PublicContentController
@@ -39,6 +40,23 @@ final class PublicContentController
             ->orderBy('due_on')
             ->limit(100)
             ->get(['title', 'slug', 'description', 'category', 'due_on', 'source_url', 'published_at']);
+
+        return response()->json(['data' => $data]);
+    }
+
+    public function posts(): JsonResponse
+    {
+        if (!config('dhakafin.features.blog', false)) {
+            return response()->json(['status' => 'coming_soon'], 503);
+        }
+
+        $data = Post::query()
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
+            ->latest('published_at')
+            ->limit(50)
+            ->get(['title', 'slug', 'category', 'excerpt', 'body', 'source_url', 'published_at']);
 
         return response()->json(['data' => $data]);
     }
