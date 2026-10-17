@@ -9,10 +9,17 @@ $pages = [
     'services', 'client-services', 'consultation', 'terms',
     'accessibility', 'personal-tax', 'corporate-tax',
     'ai-tax-search', 'tools', 'tds-calculator', 'privacy',
+    'vat-calculator', 'mushak-6-3', 'tax-act', 'circulars',
+    'tax-deadlines', 'vcfo', 'about', 'contact',
 ];
 $featurePages = [
     'ai-tax-search' => 'law_search',
     'tds-calculator' => 'tds_calculator',
+    'vat-calculator' => 'vat_calculator',
+    'mushak-6-3' => 'vat_calculator',
+    'tax-act' => 'law_search',
+    'circulars' => 'notices',
+    'tax-deadlines' => 'deadlines',
     'client-services' => 'client_portal',
 ];
 
