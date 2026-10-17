@@ -7,6 +7,10 @@ on:
       - audit/laravel-conversion-20261017
   pull_request:
 
+concurrency:
+  group: dhakafin-laravel-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
