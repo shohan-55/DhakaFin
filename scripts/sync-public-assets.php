@@ -39,3 +39,12 @@ foreach ($sourceIterator as $file) {
     $count++;
 }
 echo "Synced {$count} original asset files to public/assets.\n";
+
+// Preserve original public SEO and error documents as well.
+foreach (['robots.txt', 'sitemap.xml', 'sitemap.json', '404.html'] as $file) {
+    $original = $root . DIRECTORY_SEPARATOR . $file;
+    if (is_file($original) && !copy($original, $root . '/public/' . $file)) {
+        throw new RuntimeException("Could not copy public document: {$file}");
+    }
+}
+echo "Synced original public SEO documents.\n";
