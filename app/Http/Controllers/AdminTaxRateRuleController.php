@@ -43,8 +43,8 @@ final class AdminTaxRateRuleController
     public function update(Request $request, TaxRateRule $tax_rate): RedirectResponse
     {
         $data = $this->validated($request, $tax_rate);
-        $data['verified_at'] = $data['status'] === 'verified'
-            ? ($tax_rate->verified_at ?? now()) : null;
+        // Verification timestamp must reflect the current edited content.
+        $data['verified_at'] = $data['status'] === 'verified' ? now() : null;
 
         $tax_rate->fill($data)->save();
 
