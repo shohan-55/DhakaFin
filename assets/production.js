@@ -82,6 +82,8 @@
   else d.setAttribute('open','');
  }
  function getPending(a){
+  const href=a.getAttribute('href');
+  if(href){try{const file=new URL(href,document.baseURI).pathname.split('/').pop();if(window.DhakaFinFeatures?.[file]===true)return null;}catch{}}
   if(a.dataset.dfComingSoon)return {label:a.dataset.dfComingSoon,url:''};
   if(a.classList.contains('product')&&/document vault/i.test(a.textContent))return {label:'Document Vault',url:''};
   let dest=a.getAttribute('href');if(!dest || dest.startsWith('#'))return null;
@@ -105,6 +107,8 @@
  document.addEventListener('submit',e=>{
   const f=e.target;
   if(f.matches?.('#aiForm,[data-ai-form],[data-demo-submit]')){
+   const active=window.DhakaFinFeatures?.[location.pathname.split('/').pop()]===true;
+   if(active && document.querySelector('script[src$="/assets/dhakafin-integration.js"]'))return;
    e.preventDefault();e.stopImmediatePropagation();
    const path=location.pathname.split('/').pop();
    const title=f.id==='aiForm'?'AI Tax Law Search':(PENDING[path]||'Digital Tax Tools');
