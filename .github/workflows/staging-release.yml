@@ -1,0 +1,52 @@
+name: DhakaFin Staging Release
+
+on:
+  push:
+    branches:
+      - audit/laravel-conversion-20261017
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Install production dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+      - name: Copy original static assets
+        run: php scripts/sync-public-assets.php
+      - name: Validate application syntax and JS
+        run: |
+          find app config routes -name '*.php' -print0 | xargs -0 -n 1 php -l
+          node --check assets/production.js
+          node --check public/assets/dhakafin-integration.js
+      - name: Build standalone staging bundle
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          rsync -a app bootstrap config database public resources routes scripts storage vendor artisan composer.json composer.lock .env.example release/
+          {
+            echo "DhakaFin Laravel STAGING build"
+            echo "Source commit: $GITHUB_SHA"
+            echo "Built at (UTC): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "Never unpack over a production installation without review and rollback."
+            echo "Configure a new .env outside the public web root. Do not ship secrets."
+            echo "Run php artisan dhakafin:preflight before accepting a release."
+          } > release/BUILD_INFO.txt
+          zip -qr "DhakaFin-Laravel-$(echo "$GITHUB_SHA" | cut -c1-8)-staging.zip" release
+      - name: Upload isolated release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhakafin-laravel-staging
+          path: DhakaFin-Laravel-*-staging.zip
+          retention-days: 14
