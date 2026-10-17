@@ -43,6 +43,12 @@ jobs:
       - name: Check PHP syntax for application files
         run: |
           find app config routes tests -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: Validate cPanel terminal deployment and cacheability
+        run: |
+          bash -n scripts/deploy-cpanel-direct.sh
+          php artisan route:cache
+          php artisan view:cache
+          php artisan optimize:clear
       - name: Run Laravel tests
         run: php artisan test
 
