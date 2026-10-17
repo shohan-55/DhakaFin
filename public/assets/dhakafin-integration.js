@@ -67,47 +67,65 @@
         if (!form) return;
 
         let choices = [];
-        let loadError = 'Verified rates are currently unavailable.';
-        try {
-            const result = await json('/api/v1/tax/rates');
-            choices = (result.data || []).filter(item =>
-                item.tax_type === type && Number.isInteger(item.id) &&
-                Number.isInteger(item.rate_basis_points)
-            );
-        } catch (error) {
-            loadError = error.message || loadError;
-        }
-
         const vatRateSelect = type === 'vat' ? $('#input-rate', form) : null;
         const referenceField = type === 'vat' ? null : $('#input-reference', form);
-        if (vatRateSelect) {
-            vatRateSelect.replaceChildren(node('option', 'Select a verified rate'));
-            vatRateSelect.options[0].value = '';
-            choices.forEach(item => {
-                const option = node('option', item.category + ' — ' +
-                    (item.rate_basis_points / 100).toFixed(2) + '%');
-                option.value = String(item.id);
-                vatRateSelect.appendChild(option);
-            });
-        }
-        if (referenceField) {
-            const suggestions = node('datalist');
+        const dateField = type === 'vat' ? null : $('#input-date', form);
+        const suggestions = referenceField ? node('datalist') : null;
+        if (suggestions) {
             suggestions.id = 'df-verified-rate-codes';
-            choices.forEach(item => {
-                const opt = node('option');
-                opt.value = item.code;
-                opt.label = item.category + ' — ' +
-                    (item.rate_basis_points / 100).toFixed(2) + '%';
-                suggestions.appendChild(opt);
-            });
             form.appendChild(suggestions);
             referenceField.setAttribute('list', suggestions.id);
             referenceField.setAttribute('autocomplete', 'off');
         }
-        const message = choices.length
-            ? 'Select a verified rate reference before calculating.'
-            : 'No verified effective rate is available. ' + loadError;
-        setStatus(form, message, choices.length === 0);
+
+        async function reloadRates() {
+            let loadError = 'Verified rates are currently unavailable.';
+            const dateValue = dateField && dateField.value;
+            if (dateValue && !/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+                choices = [];
+                setStatus(form, 'Select a valid transaction date.', true);
+                return;
+            }
+            const dateQuery = dateValue ? '?as_of=' + encodeURIComponent(dateValue) : '';
+            try {
+                const result = await json('/api/v1/tax/rates' + dateQuery);
+                choices = (result.data || []).filter(item =>
+                    item.tax_type === type && Number.isInteger(item.id) &&
+                    Number.isInteger(item.rate_basis_points)
+                );
+            } catch (error) {
+                choices = [];
+                loadError = error.message || loadError;
+            }
+
+            if (vatRateSelect) {
+                vatRateSelect.replaceChildren(node('option', 'Select a verified rate'));
+                vatRateSelect.options[0].value = '';
+                choices.forEach(item => {
+                    const option = node('option', item.category + ' — ' +
+                        (item.rate_basis_points / 100).toFixed(2) + '%');
+                    option.value = String(item.id);
+                    vatRateSelect.appendChild(option);
+                });
+            }
+            if (suggestions) {
+                suggestions.replaceChildren();
+                choices.forEach(item => {
+                    const option = node('option');
+                    option.value = item.code;
+                    option.label = item.category + ' — ' +
+                        (item.rate_basis_points / 100).toFixed(2) + '%';
+                    suggestions.appendChild(option);
+                });
+            }
+            setStatus(form, choices.length
+                ? 'Select a verified effective-rate reference before calculating.'
+                : 'No verified effective rate is available. ' + loadError,
+                choices.length === 0);
+        }
+
+        await reloadRates();
+        if (dateField) dateField.addEventListener('change', reloadRates);
 
         // Capture before legacy demo-submit handlers, but only on enabled pages.
         form.addEventListener('submit', async event => {
@@ -141,7 +159,8 @@
                         tax_type: type,
                         rate_rule_id: matched.id,
                         amount_bdt: amount,
-                        amount_mode: mode
+                        amount_mode: mode,
+                        transaction_date: dateField && dateField.value ? dateField.value : undefined
                     })
                 });
                 const items = document.querySelectorAll('.formula-skeleton > div > strong');
