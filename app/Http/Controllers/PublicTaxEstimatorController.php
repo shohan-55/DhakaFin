@@ -29,6 +29,7 @@ final class PublicTaxEstimatorController
             'rate_rule_id' => ['required', 'integer', 'min:1'],
             'amount_bdt' => ['required', 'string', 'regex:/\A(0|[1-9][0-9]{0,11})(?:\.[0-9]{1,2})?\z/D'],
             'amount_mode' => ['sometimes', Rule::in(['exclusive', 'inclusive'])],
+            'transaction_date' => ['sometimes', 'date_format:Y-m-d'],
         ]);
 
         $mode = $data['amount_mode'] ?? 'exclusive';
@@ -36,7 +37,7 @@ final class PublicTaxEstimatorController
             return response()->json(['message' => 'Inclusive amount mode is supported only for VAT.'], 422);
         }
 
-        $today = today(config('app.timezone'));
+        $asOf = $data['transaction_date'] ?? today(config('app.timezone'))->toDateString();
 
         $rule = TaxRateRule::query()
             ->whereKey($data['rate_rule_id'])
@@ -44,10 +45,10 @@ final class PublicTaxEstimatorController
             ->where('status', 'verified')
             ->whereNotNull('verified_at')
             ->where('verified_at', '<=', now())
-            ->whereDate('effective_from', '<=', $today)
-            ->where(function ($query) use ($today): void {
+            ->whereDate('effective_from', '<=', $asOf)
+            ->where(function ($query) use ($asOf): void {
                 $query->whereNull('effective_until')
-                    ->orWhereDate('effective_until', '>=', $today);
+                    ->orWhereDate('effective_until', '>=', $asOf);
             })
             ->firstOrFail();
 
@@ -67,21 +68,24 @@ final class PublicTaxEstimatorController
         ]);
     }
 
-    public function rates(): JsonResponse
+    public function rates(Request $request): JsonResponse
     {
         if (!config('dhakafin.features.tax_rates', false)) {
             return response()->json(['status' => 'coming_soon'], 503);
         }
 
-        $today = today(config('app.timezone'));
+        $validated = $request->validate([
+            'as_of' => ['sometimes', 'date_format:Y-m-d'],
+        ]);
+        $asOf = $validated['as_of'] ?? today(config('app.timezone'))->toDateString();
         $rules = TaxRateRule::query()
             ->where('status', 'verified')
             ->whereNotNull('verified_at')
             ->where('verified_at', '<=', now())
-            ->whereDate('effective_from', '<=', $today)
-            ->where(function ($query) use ($today): void {
+            ->whereDate('effective_from', '<=', $asOf)
+            ->where(function ($query) use ($asOf): void {
                 $query->whereNull('effective_until')
-                    ->orWhereDate('effective_until', '>=', $today);
+                    ->orWhereDate('effective_until', '>=', $asOf);
             })
             ->orderBy('tax_type')
             ->orderBy('category')
