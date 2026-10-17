@@ -1,0 +1,61 @@
+name: DhakaFin Visual Parity
+
+on:
+  push:
+    branches:
+      - audit/laravel-conversion-20261017
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Prepare isolated Laravel server
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p database
+          touch database/database.sqlite
+          php scripts/sync-public-assets.php
+          php artisan migrate --force
+          APP_ENV=testing APP_DEBUG=false php artisan serve --host=127.0.0.1 --port=8002 > /tmp/dhakafin-laravel.log 2>&1 &
+          python3 -m http.server 8001 --bind 127.0.0.1 > /tmp/dhakafin-static.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:8001/index.html >/dev/null &&
+              curl --silent --fail http://127.0.0.1:8002/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/dhakafin-laravel.log
+          exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install visual testing dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright pixelmatch pngjs
+          npx playwright install --with-deps chromium
+      - name: Check frontend JS syntax
+        run: |
+          node --check assets/production.js
+          node --check public/assets/dhakafin-integration.js
+      - name: Compare all original pages at desktop and mobile widths
+        run: node scripts/visual-parity.mjs
+      - name: Upload screenshots and diff report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhakafin-visual-diffs
+          path: build/visual-parity/
+          retention-days: 7
