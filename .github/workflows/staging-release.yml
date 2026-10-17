@@ -1,9 +1,6 @@
 name: DhakaFin Staging Release
 
 on:
-  push:
-    branches:
-      - audit/laravel-conversion-20261017
   workflow_dispatch:
 
 permissions:
