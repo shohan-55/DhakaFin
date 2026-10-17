@@ -9,7 +9,15 @@ use App\Http\Controllers\AdminLegalSourceController;
 use App\Http\Controllers\AdminTaxRateRuleController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
+Route::get('/', function () {
+    $html = view('home')->render();
+    $tag = \App\Support\FeatureManifest::tag();
+
+    // Add service state only to the HTTP response; keep original design view
+    // byte-for-byte compatible with the reviewed static source.
+    return response(str_ireplace('</head>', $tag . '</head>', $html))
+        ->header('Content-Type', 'text/html; charset=UTF-8');
+})->name('home');
 
 // Preserve links to the original entry point.
 Route::redirect('/index.html', '/', 301);
