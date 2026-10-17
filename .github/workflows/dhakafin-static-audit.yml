@@ -23,6 +23,8 @@ jobs:
           php -l laravel-scaffold/audit-links.php
           php -l laravel-scaffold/routes/web.php
           php -l laravel-scaffold/config/dhakafin.php
+          php -l laravel-scaffold/app/Http/Controllers/ComingSoonController.php
+          php -l laravel-scaffold/tests/Feature/ComingSoonTest.php
           php -l laravel-scaffold/tests/Feature/LegacyFrontendRoutesTest.php
       - name: Test non-destructive Blade importer
         run: php laravel-scaffold/test-import.php
