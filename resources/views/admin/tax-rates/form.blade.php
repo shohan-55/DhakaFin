@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>{{ $rule->exists ? 'Edit' : 'Add' }} rate rule | DhakaFin Admin</title>
+<style>body{margin:0;padding:2rem;background:#092025;color:#f1fcfa;font:16px/1.6 system-ui,sans-serif}main{max-width:780px;margin:auto}label{display:block;margin-top:1rem;font-weight:600}input,textarea,select{display:block;box-sizing:border-box;width:100%;margin-top:.35rem;padding:.8rem;font:inherit;border:1px solid #52807b;border-radius:8px;background:#fff;color:#102b2b}textarea{min-height:180px}button{margin-top:1.4rem;padding:.8rem 1.5rem;border:0;border-radius:8px;background:#78dcc6;color:#05372f;font-weight:700;cursor:pointer}a{color:#8be0cb}.errors{color:#ffc5c5}</style>
+</head><body><main><p><a href="{{ route('admin.tax-rates.index') }}">← Back to rates</a></p><h1>{{ $rule->exists ? 'Edit rule' : 'Add rule' }}</h1><p>Only editorially verified rates with exact law references and effective dates are eligible for calculations. No preset statutory rates are provided.</p>
+@if ($errors->any())<div class="errors" role="alert"><ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+<form method="post" action="{{ $rule->exists ? route('admin.tax-rates.update', $rule) : route('admin.tax-rates.store') }}">@csrf
+@if ($rule->exists)@method('PUT')@endif
+<label for="code">Unique rule code</label><input id="code" name="code" required maxlength="120" value="{{ old('code', $rule->code) }}">
+<label for="tax_type">Tax type</label><select id="tax_type" name="tax_type">@foreach (['tds'=>'TDS','vds'=>'VDS','vat'=>'VAT'] as $key=>$name)<option value="{{ $key }}" @selected(old('tax_type', $rule->tax_type ?: 'tds') === $key)>{{ $name }}</option>@endforeach</select>
+<label for="category">Tax category / classification</label><input id="category" name="category" required maxlength="120" value="{{ old('category', $rule->category) }}">
+<label for="description">Scope and limitations</label><textarea id="description" name="description" required>{{ old('description', $rule->description) }}</textarea>
+<label for="rate_basis_points">Rate in basis points (100 = 1%, 500 = 5%)</label><input type="number" id="rate_basis_points" name="rate_basis_points" min="0" max="10000" step="1" required value="{{ old('rate_basis_points', $rule->rate_basis_points) }}">
+<label for="effective_from">Effective from</label><input type="date" id="effective_from" name="effective_from" required value="{{ old('effective_from', $rule->effective_from?->format('Y-m-d')) }}">
+<label for="effective_until">Effective until (optional)</label><input type="date" id="effective_until" name="effective_until" value="{{ old('effective_until', $rule->effective_until?->format('Y-m-d')) }}">
+<label for="reference_code">Law/SRO reference code</label><input id="reference_code" name="reference_code" required maxlength="160" value="{{ old('reference_code', $rule->reference_code) }}">
+<label for="provision_reference">Exact section / clause / page</label><input id="provision_reference" name="provision_reference" required maxlength="200" value="{{ old('provision_reference', $rule->provision_reference) }}">
+<label for="source_url">Direct source document URL</label><input id="source_url" name="source_url" type="url" required value="{{ old('source_url', $rule->source_url) }}">
+<label for="status">Review status</label><select id="status" name="status"><option value="draft" @selected(old('status', $rule->status ?: 'draft') === 'draft')>Draft</option><option value="verified" @selected(old('status', $rule->status ?: 'draft') === 'verified')>Verified</option></select>
+<button type="submit">Save rate rule</button></form></main></body></html>

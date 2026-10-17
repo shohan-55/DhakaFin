@@ -1,0 +1,157 @@
+name: Laravel CI
+
+on:
+  push:
+    branches:
+      - main
+      - audit/laravel-conversion-20261017
+  pull_request:
+
+concurrency:
+  group: dhakafin-laravel-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel test environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p database
+          touch database/database.sqlite
+          php scripts/sync-public-assets.php
+          php artisan config:clear
+          php artisan migrate --force
+      - name: Check PHP syntax for application files
+        run: |
+          find app config routes tests -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: Validate cPanel terminal deployment and cacheability
+        run: |
+          bash -n scripts/deploy-cpanel-direct.sh
+          php artisan route:cache
+          php artisan view:cache
+          php artisan optimize:clear
+      - name: Exercise direct cPanel cutover in an isolated CI webroot
+        run: |
+          set -euo pipefail
+          SIM_HOME="$(dirname "$PWD")"
+          mkdir -p "$SIM_HOME/public_html/.git" "$SIM_HOME/public_html/pages" "$SIM_HOME/public_html/assets"
+          printf 'static homepage\n' > "$SIM_HOME/public_html/index.html"
+          printf 'legacy page\n' > "$SIM_HOME/public_html/pages/about.html"
+          printf 'original rules\n' > "$SIM_HOME/public_html/.htaccess"
+          printf 'old static git metadata\n' > "$SIM_HOME/public_html/.git/config"
+          HOME="$SIM_HOME" bash scripts/deploy-cpanel-direct.sh
+          test -f "$SIM_HOME/public_html/index.php"
+          grep -q "$(basename "$PWD")/vendor/autoload.php" "$SIM_HOME/public_html/index.php"
+          test ! -e "$SIM_HOME/public_html/.git"
+          test ! -e "$SIM_HOME/public_html/index.html"
+          test ! -e "$SIM_HOME/public_html/pages/about.html"
+          grep -q 'RewriteRule' "$SIM_HOME/public_html/.htaccess"
+          test -f "$SIM_HOME/public_html/assets/site.css"
+          # Simulated production deploy caches config/routes; clear them so
+          # Laravel's testing environment and middleware behave correctly.
+          php artisan optimize:clear
+      - name: Run Laravel tests
+        run: php artisan test
+
+  visual-parity:
+    if: github.ref == 'refs/heads/audit/laravel-conversion-20261017' || github.event_name == 'pull_request'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Compile isolated Blade view snapshots
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate
+          php scripts/sync-public-assets.php
+          php scripts/export-visual-snapshots.php
+          cp -a public/assets build/visual-snapshots/assets
+          php artisan migrate --force
+          CI=true APP_ENV=testing php tests/Fixtures/seed-browser-ci.php
+          python3 -m http.server 8001 --bind 127.0.0.1 > /tmp/static.log 2>&1 &
+          python3 -m http.server 8002 --bind 127.0.0.1 --directory build/visual-snapshots > /tmp/blade.log 2>&1 &
+          APP_ENV=testing CI=true DHAKAFIN_TDS_ENABLED=true DHAKAFIN_VDS_ENABLED=true DHAKAFIN_VAT_ENABLED=true DHAKAFIN_TAX_RATES_ENABLED=true DHAKAFIN_LAW_SEARCH_ENABLED=true php artisan serve --host=127.0.0.1 --port=8003 > /tmp/laravel-smoke.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:8001/index.html >/dev/null &&
+              curl --silent --fail http://127.0.0.1:8002/index.html >/dev/null &&
+              curl --silent --fail http://127.0.0.1:8003/api/v1/tax/rates >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/blade.log
+          exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium and visual diff tooling
+        run: |
+          npm install --no-save --no-package-lock playwright pixelmatch pngjs
+          npx playwright install --with-deps chromium
+      - name: Verify JS and every desktop/mobile page rendering
+        run: |
+          node --check assets/production.js
+          node --check public/assets/dhakafin-integration.js
+          node scripts/visual-parity.mjs
+          node scripts/frontend-smoke.mjs
+      - name: Upload visual mismatch report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-parity-diffs
+          path: build/visual-parity/
+          retention-days: 7
+
+  staging-package:
+    if: github.ref == 'refs/heads/audit/laravel-conversion-20261017' || github.event_name == 'pull_request'
+    needs: [test, visual-parity]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Install locked production dependencies
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader
+      - name: Assemble isolated cPanel staging bundle
+        run: |
+          set -euo pipefail
+          php scripts/sync-public-assets.php
+          mkdir -p release
+          rsync -a app bootstrap config database public resources routes scripts storage vendor artisan composer.json composer.lock .env.example release/
+          printf 'DhakaFin staging only\nCommit: %s\nNever overwrite production directly.\n' "$GITHUB_SHA" > release/BUILD_INFO.txt
+          zip -qr "DhakaFin-Laravel-$(echo "$GITHUB_SHA" | cut -c1-8)-staging.zip" release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dhakafin-cpanel-staging-zip
+          path: DhakaFin-Laravel-*-staging.zip
+          retention-days: 14

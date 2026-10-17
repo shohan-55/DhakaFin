@@ -1,0 +1,35 @@
+name: DhakaFin Laravel Validation
+
+on:
+  push:
+    branches:
+      - audit/laravel-conversion-20261017
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  laravel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, xml, curl, zip, sqlite3, pdo_sqlite
+          coverage: none
+      - name: Verify HTML and Blade markup parity
+        run: php scripts/verify-view-parity.php
+      - name: PHP syntax checks
+        run: find app bootstrap config routes tests scripts -name '*.php' -type f -print0 | xargs -0 -n1 php -l
+      - name: Install Laravel dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare local test environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php scripts/sync-public-assets.php
+          php scripts/preflight.php
+      - name: Run framework feature tests
+        run: php artisan test
