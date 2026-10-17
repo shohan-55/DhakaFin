@@ -1,0 +1,43 @@
+name: Laravel CI
+
+on:
+  push:
+    branches:
+      - main
+      - audit/laravel-conversion-20261017
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite, sqlite3, fileinfo
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel test environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p database
+          touch database/database.sqlite
+          php scripts/sync-public-assets.php
+          php artisan config:clear
+          php artisan migrate --force
+      - name: Check PHP syntax for application files
+        run: |
+          find app config routes tests -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: Run Laravel tests
+        run: php artisan test
