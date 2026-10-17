@@ -49,6 +49,23 @@ jobs:
           php artisan route:cache
           php artisan view:cache
           php artisan optimize:clear
+      - name: Exercise direct cPanel cutover in an isolated CI webroot
+        run: |
+          set -euo pipefail
+          SIM_HOME="$(dirname "$PWD")"
+          mkdir -p "$SIM_HOME/public_html/.git" "$SIM_HOME/public_html/pages" "$SIM_HOME/public_html/assets"
+          printf 'static homepage\n' > "$SIM_HOME/public_html/index.html"
+          printf 'legacy page\n' > "$SIM_HOME/public_html/pages/about.html"
+          printf 'original rules\n' > "$SIM_HOME/public_html/.htaccess"
+          printf 'old static git metadata\n' > "$SIM_HOME/public_html/.git/config"
+          HOME="$SIM_HOME" bash scripts/deploy-cpanel-direct.sh
+          test -f "$SIM_HOME/public_html/index.php"
+          grep -q "$(basename "$PWD")/vendor/autoload.php" "$SIM_HOME/public_html/index.php"
+          test ! -e "$SIM_HOME/public_html/.git"
+          test ! -e "$SIM_HOME/public_html/index.html"
+          test ! -e "$SIM_HOME/public_html/pages/about.html"
+          grep -q 'RewriteRule' "$SIM_HOME/public_html/.htaccess"
+          test -f "$SIM_HOME/public_html/assets/site.css"
       - name: Run Laravel tests
         run: php artisan test
 
