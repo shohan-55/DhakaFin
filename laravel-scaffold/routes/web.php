@@ -12,3 +12,7 @@ Route::get('/pages/{slug}.html', function (string $slug) {
     abort_unless(view()->exists('legacy.pages.'.$slug), 404);
     return view('legacy.pages.'.$slug);
 })->name('legacy.page');
+
+\Illuminate\Support\Facades\Route::get('/coming-soon/{feature}', \App\Http\Controllers\ComingSoonController::class)
+    ->where('feature', '[a-z0-9-]+')
+    ->name('coming-soon');
