@@ -47,6 +47,16 @@ $compare = static function (string $source, string $view, bool $home) use (&$fai
         return;
     }
 
+    // Literal static HTML is wrapped so Blade cannot execute @if / @else-like
+    // sequences appearing inside the original site's content or scripts.
+    $open = '@verbatim';
+    $close = '@endverbatim';
+    if (str_starts_with($converted, $open) && str_ends_with($converted, $close)) {
+        $converted = substr($converted, strlen($open), -strlen($close));
+    } else {
+        $failures[] = "Missing literal-markup guards: {$view}";
+    }
+
     if ($rewrite($original, $home) !== $converted) {
         $failures[] = "Markup differs unexpectedly: {$view}";
     }
