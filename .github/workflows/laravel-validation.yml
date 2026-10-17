@@ -30,5 +30,6 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           php scripts/sync-public-assets.php
+          php scripts/preflight.php
       - name: Run framework feature tests
         run: php artisan test
