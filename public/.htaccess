@@ -5,6 +5,11 @@
 
     RewriteEngine On
 
+    # Never serve credentials or repository internals, even when a path exists.
+    # Leave /.well-known/ available for AutoSSL certificate challenges.
+    RewriteRule (^|/)\.(git|svn|hg|env)(/|$) - [F,L,NC]
+    RewriteRule ^(vendor|storage|database|bootstrap|tests)(/|$) - [F,L,NC]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
