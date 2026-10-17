@@ -1,0 +1,26 @@
+name: DhakaFin static migration checks
+
+on:
+  push:
+    branches:
+      - audit/laravel-conversion-20261017
+  pull_request:
+
+jobs:
+  static-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+      - name: Lint migration scripts
+        run: |
+          php -l laravel-scaffold/import.php
+          php -l laravel-scaffold/audit-links.php
+          php -l laravel-scaffold/routes/web.php
+          php -l laravel-scaffold/tests/Feature/LegacyFrontendRoutesTest.php
+      - name: Audit local links and assets
+        run: php laravel-scaffold/audit-links.php .
