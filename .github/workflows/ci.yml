@@ -66,6 +66,9 @@ jobs:
           test ! -e "$SIM_HOME/public_html/pages/about.html"
           grep -q 'RewriteRule' "$SIM_HOME/public_html/.htaccess"
           test -f "$SIM_HOME/public_html/assets/site.css"
+          # Simulated production deploy caches config/routes; clear them so
+          # Laravel's testing environment and middleware behave correctly.
+          php artisan optimize:clear
       - name: Run Laravel tests
         run: php artisan test
 
