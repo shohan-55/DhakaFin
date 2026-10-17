@@ -44,8 +44,8 @@ final class AdminLegalSourceController
     public function update(Request $request, LegalSource $legal_source): RedirectResponse
     {
         $data = $this->validated($request, $legal_source);
-        $data['verified_at'] = $data['status'] === 'verified'
-            ? ($legal_source->verified_at ?? now()) : null;
+        // Verification timestamp must reflect the current edited content.
+        $data['verified_at'] = $data['status'] === 'verified' ? now() : null;
         $legal_source->fill($data)->save();
 
         return redirect()->route('admin.legal-sources.index')->with('status', 'Source updated.');
