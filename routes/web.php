@@ -4,6 +4,7 @@ use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminNoticeController;
 use App\Http\Controllers\AdminDeadlineController;
+use App\Http\Controllers\AdminPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -29,5 +30,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
         Route::resource('notices', AdminNoticeController::class)->except('show');
         Route::resource('deadlines', AdminDeadlineController::class)->except('show');
+        Route::resource('posts', AdminPostController::class)->except('show');
     });
 });
