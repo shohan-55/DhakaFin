@@ -61,7 +61,7 @@ STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP="$(dirname "$DOCROOT")/dhakafin-site-rollback/$STAMP"
 mkdir -p "$BACKUP"
 chmod 700 "$BACKUP"
-for item in index.html index.php .htaccess pages assets; do
+for item in index.html index.php .htaccess pages assets robots.txt sitemap.xml sitemap.json 404.html; do
     if [[ -e "$DOCROOT/$item" ]]; then
         cp -a "$DOCROOT/$item" "$BACKUP/$item"
     fi
@@ -80,6 +80,13 @@ fi
 
 mkdir -p "$DOCROOT/assets"
 cp -a "$APP/public/assets/." "$DOCROOT/assets/"
+# Copy root-level public metadata too (robots, sitemap, custom 404), but
+# never copy the unpatched Laravel front controller into public_html.
+for file in "$APP/public/"*; do
+    if [[ -f "$file" && "$(basename "$file")" != "index.php" ]]; then
+        cp -a "$file" "$DOCROOT/$(basename "$file")"
+    fi
+done
 cp "$APP/public/.htaccess" "$DOCROOT/.htaccess"
 cp "$INDEX_TMP" "$DOCROOT/.index.php.new"
 chmod 644 "$DOCROOT/.htaccess" "$DOCROOT/.index.php.new"
