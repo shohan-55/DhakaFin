@@ -6,7 +6,7 @@
 import { chromium } from 'playwright';
 import pixelmatch from 'pixelmatch';
 import { PNG } from 'pngjs';
-import { readdir, mkdir, writeFile } from 'node:fs/promises';
+import { readdir, mkdir, writeFile, readFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 
 const original = process.env.ORIGINAL_SITE_URL || 'http://127.0.0.1:8001';
@@ -60,7 +60,6 @@ for (const v of viewports) {
             await shot(plainPage, original + '/' + slug, aFile);
             const destination = slug === 'index.html' ? '/' : '/' + slug;
             await shot(laravelPage, converted + destination, bFile);
-            const { readFile } = await import('node:fs/promises');
             const a = PNG.sync.read(await readFile(aFile));
             const b = PNG.sync.read(await readFile(bFile));
             let ratio = 1;
@@ -86,6 +85,7 @@ for (const v of viewports) {
             };
             summaries.push(result);
             if (!result.passed) failures.push(result);
+            else await Promise.all([unlink(aFile), unlink(bFile)]);
             console.log((result.passed ? 'PASS ' : 'FAIL ') + id +
                 ' diff=' + (100 * ratio).toFixed(3) + '%');
         } catch (err) {
