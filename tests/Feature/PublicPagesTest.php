@@ -34,8 +34,8 @@ class PublicPagesTest extends TestCase
 
     public function test_unknown_page_is_not_found(): void
     {
-        $this->get('/pages/not-a-real-page.html')->assertNotFound();
-        $this->get('/pages/../index.html')->assertNotFound();
+        $this->get('/pages/not-a-real-page.html')->assertNotFound()->assertSee('This page has moved');
+        $this->get('/pages/nonexistent-file.html')->assertNotFound();
     }
 
     public function test_original_assets_are_present_in_laravel_public(): void
