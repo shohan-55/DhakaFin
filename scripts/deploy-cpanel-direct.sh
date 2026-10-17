@@ -45,7 +45,39 @@ if [[ $(grep -Fc "__DIR__.'/../" "$APP/public/index.php") -lt 3 ]]; then
     exit 1
 fi
 INDEX_TMP="$(mktemp "$APP/storage/app/dhakafin-index.XXXXXX")"
-trap 'rm -f "$INDEX_TMP"' EXIT
+BACKUP=""
+PUBLISH_STARTED=0
+DEPLOY_SUCCEEDED=0
+cleanup_deploy() {
+    local status="$?"
+    trap - EXIT
+    if [[ "$PUBLISH_STARTED" -eq 1 && "$DEPLOY_SUCCEEDED" -ne 1 ]]; then
+        echo "ERROR: publishing failed; restoring original website from $BACKUP" >&2
+        # Roll back relocated legacy files and Git metadata.
+        [[ ! -e "$BACKUP/pages-disabled" ]] || mv -f "$BACKUP/pages-disabled" "$DOCROOT/pages" || true
+        [[ ! -e "$BACKUP/index.html-disabled" ]] || mv -f "$BACKUP/index.html-disabled" "$DOCROOT/index.html" || true
+        [[ ! -e "$BACKUP/git-disabled" ]] || mv -f "$BACKUP/git-disabled" "$DOCROOT/.git" || true
+        for item in index.php .htaccess robots.txt sitemap.xml sitemap.json 404.html; do
+            if [[ -e "$BACKUP/$item" ]]; then
+                cp -a "$BACKUP/$item" "$DOCROOT/$item" || true
+            elif [[ "$item" == "index.php" ]]; then
+                rm -f "$DOCROOT/index.php"
+            fi
+        done
+        if [[ -d "$BACKUP/assets" ]]; then
+            mkdir -p "$DOCROOT/assets"
+            cp -a "$BACKUP/assets/." "$DOCROOT/assets/" || true
+        fi
+        rm -f "$DOCROOT/.index.php.new" || true
+        echo "Original files restored where possible. Check the live domain." >&2
+    fi
+    rm -f "$INDEX_TMP"
+    if [[ "$DEPLOY_SUCCEEDED" -eq 1 ]]; then
+        exit 0
+    fi
+    exit "$status"
+}
+trap cleanup_deploy EXIT
 sed "s|__DIR__.'/../|__DIR__.'/../$APPNAME/|g" \
     "$APP/public/index.php" > "$INDEX_TMP"
 php -l "$INDEX_TMP" >/dev/null
@@ -67,6 +99,12 @@ for item in index.html index.php .htaccess pages assets robots.txt sitemap.xml s
     fi
 done
 echo "Rollback snapshot: $BACKUP"
+PUBLISH_STARTED=1
+# This existing .git belongs to the former static website; Laravel Git
+# operations now run from the private checkout, not the public directory.
+if [[ -d "$DOCROOT/.git" ]]; then
+    mv "$DOCROOT/.git" "$BACKUP/git-disabled"
+fi
 
 # Original /pages/*.html files would bypass Laravel and its feature flags.
 # Move them away only after the database, PHP entrypoint and rollback copy
@@ -91,6 +129,7 @@ cp "$APP/public/.htaccess" "$DOCROOT/.htaccess"
 cp "$INDEX_TMP" "$DOCROOT/.index.php.new"
 chmod 644 "$DOCROOT/.htaccess" "$DOCROOT/.index.php.new"
 mv -f "$DOCROOT/.index.php.new" "$DOCROOT/index.php"
+DEPLOY_SUCCEEDED=1
 echo "DhakaFin Laravel webroot published: $DOCROOT"
 echo "Original site snapshot: $BACKUP"
 echo "Next: test https://dhakafin.com/ , /pages/about.html , /admin/login"
