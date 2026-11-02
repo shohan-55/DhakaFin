@@ -1,0 +1,1 @@
+<footer class="df-simple-footer">© 2026 DhakaFin · Financial Advisory &amp; Tax Technology · <a href="{{ route('pages.show', 'privacy') }}">Privacy</a> · <a href="{{ route('pages.show', 'contact') }}">Contact</a></footer>
