@@ -8,14 +8,6 @@
     <meta name="app-url" content="{{ url('/') }}"/>
     <meta name="description" content="@yield('meta_description', 'DhakaFin — Accounting, Tax, VAT & Financial Advisory in Bangladesh')"/>
     <title>@yield('title', 'DhakaFin')</title>
-    @hasSection('simple_assets')
-    @else
-    <link rel="stylesheet" href="{{ asset('assets/site.css') }}"/>
-    <script defer src="{{ asset('assets/site.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('assets/signature.css') }}"/>
-    <script defer src="{{ asset('assets/signature.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('assets/motion.css') }}"/>
-    @endif
     <meta name="robots" content="@yield('meta_robots', 'index, follow, max-image-preview:large')"/>
     <link rel="canonical" href="{{ url()->current() }}"/>
     <meta property="og:type" content="website"/>
@@ -30,10 +22,13 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="@yield('title', 'DhakaFin')"/>
     <meta name="twitter:description" content="@yield('meta_description', 'DhakaFin — Accounting, Tax, VAT & Financial Advisory in Bangladesh')"/>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/production.css') }}"/>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNyIgZmlsbD0iIzA2NGUzYiIvPjxyZWN0IHg9IjUiIHk9IjUiIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgcng9IjE0IiBmaWxsPSIjYjllN2MzIi8+PHRleHQgeD0iMTEiIHk9IjQ1IiBmaWxsPSIjMDY0ZTNiIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGxldHRlci1zcGFjaW5nPSItMyI+ZGYuPC90ZXh0Pjwvc3ZnPg=="/>
     @yield('json_ld')
-    <link rel="stylesheet" href="{{ asset('assets/grouped-nav.css') }}"/>
+    @hasSection('simple_assets')
+        @include('partials.styles-simple')
+    @else
+        @include('partials.styles-inner')
+    @endif
     @stack('styles')
     <script>
         window.DHAKAFIN_RATES = @json($cms['tax_rates'] ?? []);
@@ -56,11 +51,10 @@
     @endif
 
     @hasSection('simple_assets')
+        @include('partials.scripts-simple')
     @else
-    <script defer src="{{ asset('assets/motion.js') }}"></script>
+        @include('partials.scripts-inner')
     @endif
-    <script defer src="{{ asset('assets/production.js') }}"></script>
-    <script src="{{ asset('assets/grouped-nav.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

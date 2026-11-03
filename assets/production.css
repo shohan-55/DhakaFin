@@ -1,0 +1,59 @@
+
+/* DhakaFin premium production layer — static public launch. */
+:root{--df-capsule:#063d31;--df-capsule-shadow:0 18px 65px rgba(0,39,29,.28)}
+html{scroll-padding-top:105px}
+/* Both homepage navbar and inner page nav remain visible as a stable capsule while scrolling. */
+.nav-wrap{position:sticky!important;top:0!important;z-index:120!important;background:#063e32;transition:background .3s ease,padding .3s ease;}
+.nav-wrap>.nav{transition:max-width .42s cubic-bezier(.2,.85,.2,1),min-height .35s ease,height .35s ease,border-radius .4s ease,box-shadow .4s ease,background .35s ease,padding .35s ease}
+body.df-scrolled .nav-wrap{background:transparent!important;padding:9px 14px 0;top:0!important;}
+body.df-scrolled .nav-wrap>.nav{max-width:1160px;width:min(100%,1160px);height:66px!important;margin:auto;border-radius:999px;background:rgba(3,50,39,.95);border:1px solid rgba(196,246,207,.27);box-shadow:var(--df-capsule-shadow);padding-left:25px;padding-right:25px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.v2-header{position:sticky!important;top:0!important;z-index:120!important;transition:background .35s ease,padding .35s ease}
+.v2-nav{transition:max-width .42s cubic-bezier(.2,.85,.2,1),height .35s ease,border-radius .4s ease,box-shadow .4s ease,background .35s ease,padding .35s ease}
+body.df-scrolled .v2-header{background:transparent!important;border-color:transparent!important;padding:9px 14px 0}
+body.df-scrolled .v2-header>.v2-nav{max-width:1140px;width:min(100%,1140px);height:66px!important;margin:auto;padding-left:26px;padding-right:26px;border-radius:999px;background:rgba(3,50,39,.96);border:1px solid rgba(196,246,207,.25);box-shadow:var(--df-capsule-shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+/* Open mobile dropdown beneath the floating bar, not behind the content. */
+body.df-scrolled .v2-header .v2-mobile{background:#063e32;border:1px solid #ffffff2b;border-radius:18px;margin-top:7px;box-shadow:0 22px 44px rgba(0,29,19,.22)}
+body.df-scrolled .nav-wrap .dropdown,body.df-scrolled .nav-wrap .mobile-panel{background:#063c30;border-radius:20px;box-shadow:0 22px 48px rgba(0,26,17,.23)}
+body.df-scrolled .v2-brand-mark{width:40px;height:40px;font-size:27px}
+body.df-scrolled .v2-brand b{font-size:22px}
+body.df-scrolled .brand-icon{width:40px;height:40px;font-size:27px}
+body.df-scrolled .brand-name{font-size:22px}
+/* Clear, credible language on pages that are still building toward online delivery */
+.df-enquiry-note{color:#46665b;font-size:12px;line-height:1.65;margin-top:9px}
+.df-service-notice{margin:15px 0 25px;background:#e8f4eb;border-left:3px solid #059669;border-radius:11px;padding:15px 19px;color:#0c4c3a;font-size:13px;line-height:1.65}
+.df-client-service{margin:0;background:#f6f8f3;color:#12382b;font-family:Arial,'Segoe UI',sans-serif}
+.df-simple-nav{display:flex;gap:22px;align-items:center;justify-content:space-between;padding:20px max(25px,calc((100vw - 1240px)/2));background:#063e32;color:#fff;position:sticky;top:0;z-index:120}
+.df-simple-nav nav{display:flex;gap:26px}.df-simple-nav a,.df-client-service a{text-decoration:none;color:inherit}
+.df-simple-brand{font-size:29px;font-family:Georgia,serif}.df-simple-brand strong{font-family:Arial,sans-serif;font-size:25px}.df-simple-cta{display:inline-block;background:#c6edcb;color:#063c30!important;border-radius:999px;padding:14px 21px;font-weight:700;font-size:14px}
+.df-client-head{text-align:center;background:#063e32;color:#f6fff4;padding:110px 24px 125px}.df-client-head>span{color:#b6efbd;font-size:12px;letter-spacing:.15em}.df-client-head h1{max-width:900px;margin:30px auto;font-size:clamp(39px,6vw,76px);letter-spacing:-.045em;line-height:1.09}.df-client-head em{font-family:Georgia,serif;color:#b8eac4}.df-client-head p{max-width:710px;font-size:18px;line-height:1.8;color:#d8ece1;margin:0 auto 36px}
+.df-client-tiles{max-width:1230px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:-65px auto 100px;padding:0 25px;position:relative}.df-client-tiles article{background:white;border:1px solid #e1eae1;border-radius:24px;padding:36px 30px;box-shadow:0 17px 40px #002d1914}.df-client-tiles b{color:#0e8f63}.df-client-tiles h2{font-size:25px}.df-client-tiles p{color:#537062;line-height:1.8}.df-client-tiles a{font-weight:700;color:#047856}.df-simple-footer{text-align:center;background:#022f25;color:#e5f3e6;padding:36px}
+@media(max-width:1090px){body.df-scrolled .nav-wrap>.nav{padding-left:15px;padding-right:15px}body.df-scrolled .v2-header>.v2-nav{padding-left:17px;padding-right:17px}.df-simple-nav{flex-wrap:wrap}.df-client-tiles{grid-template-columns:1fr}}
+@media(max-width:680px){body.df-scrolled .nav-wrap{padding:7px 10px 0}body.df-scrolled .nav-wrap>.nav{height:64px!important;max-width:100%;border-radius:27px!important;padding:0 13px}.nav-wrap .brand{min-width:0}body.df-scrolled .nav-wrap .brand-name{font-size:20px}body.df-scrolled .nav-wrap .brand-icon{width:37px;height:37px;font-size:24px}body.df-scrolled .v2-header{padding:7px 10px 0}body.df-scrolled .v2-header>.v2-nav{height:64px!important;padding:0 13px;border-radius:27px!important}body.df-scrolled .v2-brand{min-width:0}body.df-scrolled .v2-brand b{font-size:19px}body.df-scrolled .v2-brand-mark{width:35px;height:35px;font-size:24px}.df-simple-nav nav{display:none}.df-simple-cta{font-size:12px}.df-client-head{padding:76px 25px 110px}.df-client-head p{font-size:15px}.df-client-tiles{margin-top:-50px}.df-client-tiles article{padding:26px 22px}}
+@media(prefers-reduced-motion:reduce){.nav-wrap,.nav-wrap>.nav,.v2-header,.v2-header>.v2-nav{transition:none!important}}
+
+
+/* Unified corporate coming-soon notice, intentionally separate from advisory/contact flows. */
+.df-av-dialog{position:fixed;inset:0;max-width:min(94vw,550px);max-height:min(90vh,720px);margin:auto;padding:0;border:1px solid #c7e4d4;border-radius:27px;overflow:auto;background:#fafffb;color:#123d2e;box-shadow:0 40px 110px rgba(0,24,18,.37);z-index:2147483000}
+.df-av-dialog::backdrop{background:rgba(0,22,16,.7);backdrop-filter:blur(8px)}
+.df-av-dialog:not([open]){display:none}
+.df-av-shell{padding:clamp(25px,5vw,43px);font-family:Inter,system-ui,Arial,sans-serif}
+.df-av-top{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.df-av-brand{display:flex;align-items:center;gap:9px;color:#2e6c50;font-size:10px;font-weight:800;letter-spacing:.11em}
+.df-av-icon{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;background:#064d39;color:#d6f2db;border-radius:10px;font-size:18px;font-weight:900;letter-spacing:-.12em;padding-right:3px}
+.df-av-close{width:39px;height:39px;border:1px solid #d8e8de;border-radius:50%;background:white;color:#284c3a;cursor:pointer;font-size:25px;line-height:1}
+.df-av-close:hover{background:#eaf5ef}
+.df-av-symbol{display:flex;justify-content:center;align-items:center;margin-top:27px;width:70px;height:70px;border-radius:22px;background:linear-gradient(140deg,#064f39,#05a274);color:#ecffe9;font-size:40px;transform:rotate(-8deg);box-shadow:0 14px 25px #0871482e}
+.df-av-kicker{display:block;margin-top:28px;color:#078457;font-size:10px;letter-spacing:.18em;font-weight:850}
+.df-av-dialog h2{font:700 clamp(29px,5vw,42px)/1.12 Inter,system-ui,sans-serif;letter-spacing:-.055em;color:#062e24;max-width:420px;margin:12px 0 16px}
+.df-av-dialog p{font-size:15px;line-height:1.75;color:#526a5f;margin:0 0 21px}
+.df-av-availability{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 15px;background:#ecf5ee;border:1px solid #dbe9dd;border-radius:14px;color:#1d4a35;font-size:13px;font-weight:750}
+.df-av-dot{width:7px;height:7px;background:#13a875;border-radius:50%;flex:none}
+.df-av-soon{margin-left:auto;font-size:9px;color:#157a58;letter-spacing:.07em}
+.df-av-actions{display:flex;align-items:stretch;gap:10px;margin-top:23px;flex-wrap:wrap}
+.df-av-primary,.df-av-secondary{border:0;border-radius:12px;min-height:48px;padding:13px 18px;font-size:13px;font-weight:750;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.df-av-primary{background:#046847;color:white;flex:1}.df-av-primary:hover{background:#064b37;color:white}
+.df-av-secondary{background:#edf2ee;color:#234537}.df-av-secondary:hover{background:#dfece3}
+.df-av-more{display:inline-flex;color:#116849;font-weight:750;font-size:12px;text-decoration:none;margin-top:16px;gap:9px;align-items:center}
+.df-av-more[hidden]{display:none}.df-av-more:hover{text-decoration:underline}
+@media(max-width:520px){.df-av-dialog{max-width:calc(100vw - 24px);border-radius:22px}.df-av-shell{padding:25px 23px 29px}.df-av-actions{flex-direction:column}.df-av-primary,.df-av-secondary{width:100%}.df-av-soon{margin-left:0}.df-av-symbol{width:62px;height:62px;font-size:33px}}
+@media(prefers-reduced-motion:reduce){.df-av-dialog::backdrop{backdrop-filter:none}}

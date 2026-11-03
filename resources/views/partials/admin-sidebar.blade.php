@@ -22,10 +22,10 @@
     <a class="side-brand" href="{{ route('home') }}">df. <span>DhakaFin</span></a>
     <div class="portal-user">
         <div>AD</div>
-        <div>
+        <span>
             <b>{{ $cms['admin_credentials']['name'] ?? 'Administrator' }}</b>
             <small>100% No-Code Studio</small>
-        </div>
+        </span>
     </div>
     <nav aria-label="Admin Studio navigation">
         @foreach ($adminNav as $item)

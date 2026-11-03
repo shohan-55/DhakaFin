@@ -4,7 +4,6 @@
 @section('meta_description', 'Connect with DhakaFin for client support, accounting documents, taxation and advisory enquiries in Bangladesh.')
 @section('meta_robots', 'index, follow, max-image-preview:large')
 @section('body_class', 'df-client-service')
-@section('simple_assets', true)
 @section('custom_footer')
     @include('partials.simple-footer')
 @endsection

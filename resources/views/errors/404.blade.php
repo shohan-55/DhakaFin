@@ -6,8 +6,8 @@
     <title>Page Not Found | DhakaFin</title>
     <meta name="robots" content="noindex, follow">
     <meta name="description" content="The requested page is unavailable. Return to DhakaFin for accounting, tax, VAT and financial advisory services in Bangladesh.">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}">
-    <link rel="stylesheet" href="{{ asset('assets/production.css') }}">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNyIgZmlsbD0iIzA2NGUzYiIvPjxyZWN0IHg9IjUiIHk9IjUiIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgcng9IjE0IiBmaWxsPSIjYjllN2MzIi8+PHRleHQgeD0iMTEiIHk9IjQ1IiBmaWxsPSIjMDY0ZTNiIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGxldHRlci1zcGFjaW5nPSItMyI+ZGYuPC90ZXh0Pjwvc3ZnPg==">
+    @include('partials.styles-simple')
 </head>
 <body class="df-client-service">
     <header class="df-simple-nav">

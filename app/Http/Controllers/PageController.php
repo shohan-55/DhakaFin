@@ -75,4 +75,30 @@ class PageController extends Controller
     {
         return response()->json(array_values(config('dhakafin.pages', [])));
     }
+
+    /**
+     * Serve static assets directly if routed through Laravel.
+     */
+    public function asset(string $path): Response
+    {
+        $cleanPath = ltrim(str_replace('..', '', $path), '/');
+        $fullPath = public_path("assets/{$cleanPath}");
+        abort_unless(is_file($fullPath), 404);
+
+        $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+        $mimeMap = [
+            'css' => 'text/css; charset=UTF-8',
+            'js' => 'application/javascript; charset=UTF-8',
+            'svg' => 'image/svg+xml',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'json' => 'application/json; charset=UTF-8',
+        ];
+
+        return response(file_get_contents($fullPath), 200, [
+            'Content-Type' => $mimeMap[$ext] ?? 'application/octet-stream',
+            'Cache-Control' => 'public, max-age=604800',
+        ]);
+    }
 }

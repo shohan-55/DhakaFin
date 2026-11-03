@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/index.html', [PageController::class, 'home']);
 
+// Static asset fallback routes
+Route::get('/assets/{path}', [PageController::class, 'asset'])->where('path', '.*')->name('assets.serve');
+Route::get('/pages/assets/{path}', [PageController::class, 'asset'])->where('path', '.*');
+Route::get('/public/assets/{path}', [PageController::class, 'asset'])->where('path', '.*');
+
 // Sitemap & SEO routes
 Route::get('/sitemap.xml', [PageController::class, 'sitemapXml'])->name('sitemap.xml');
 Route::get('/sitemap.json', [PageController::class, 'sitemapJson'])->name('sitemap.json');

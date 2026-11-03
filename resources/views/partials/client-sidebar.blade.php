@@ -16,10 +16,10 @@
     <a class="side-brand" href="{{ route('home') }}">df. <span>DhakaFin</span></a>
     <div class="portal-user">
         <div>CL</div>
-        <div>
+        <span>
             <b>{{ $cms['admin_credentials']['client_name'] ?? 'DhakaFin Client' }}</b>
             <small>{{ $cms['admin_credentials']['client_org'] ?? 'Client Portal' }}</small>
-        </div>
+        </span>
     </div>
     <nav aria-label="Client Workspace navigation">
         @foreach ($clientNav as $item)

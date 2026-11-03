@@ -8,8 +8,6 @@
     <meta name="app-url" content="{{ url('/') }}"/>
     <meta name="description" content="@yield('meta_description', 'Professional accounting, income tax, VAT compliance, financial reporting, audit support and virtual CFO advisory for Bangladesh businesses and individuals.')"/>
     <title>@yield('title', 'DhakaFin | Accounting, Tax, VAT & Financial Advisory in Bangladesh')</title>
-    <link rel="stylesheet" href="{{ asset('assets/home.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/motion.css') }}"/>
     <meta name="robots" content="index, follow, max-image-preview:large"/>
     <link rel="canonical" href="{{ url('/') }}"/>
     <meta property="og:type" content="website"/>
@@ -24,12 +22,11 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="@yield('title', 'DhakaFin | Accounting, Tax, VAT & Financial Advisory in Bangladesh')"/>
     <meta name="twitter:description" content="@yield('meta_description', 'Professional accounting, income tax, VAT compliance, financial reporting, audit support and virtual CFO advisory for Bangladesh businesses and individuals.')"/>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/production.css') }}"/>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNyIgZmlsbD0iIzA2NGUzYiIvPjxyZWN0IHg9IjUiIHk9IjUiIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgcng9IjE0IiBmaWxsPSIjYjllN2MzIi8+PHRleHQgeD0iMTEiIHk9IjQ1IiBmaWxsPSIjMDY0ZTNiIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIzNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGxldHRlci1zcGFjaW5nPSItMyI+ZGYuPC90ZXh0Pjwvc3ZnPg=="/>
     @verbatim
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"DhakaFin","url":"https://dhakafin.com/","logo":"https://dhakafin.com/assets/dhakafin-og.png","description":"Professional accounting, income tax, VAT compliance, financial reporting, audit support and virtual CFO advisory for Bangladesh businesses and individuals.","email":"hello.sohan@outlook.com","telephone":"+8801865555767","areaServed":{"@type":"Country","name":"Bangladesh"},"availableLanguage":["en","bn"],"serviceType":["Accounting","Tax Advisory","VAT Compliance","Financial Reporting","Audit Support","Virtual CFO"]}</script>
     @endverbatim
-    <link rel="stylesheet" href="{{ asset('assets/grouped-nav.css') }}"/>
+    @include('partials.styles-home')
     @stack('styles')
     <script>
         window.DHAKAFIN_RATES = @json($cms['tax_rates'] ?? []);
@@ -46,8 +43,6 @@
     @include('partials.home-dialogs')
 
     @stack('scripts')
-    <script defer src="{{ asset('assets/motion.js') }}"></script>
-    <script defer src="{{ asset('assets/production.js') }}"></script>
-    <script src="{{ asset('assets/grouped-nav.js') }}"></script>
+    @include('partials.scripts-home')
 </body>
 </html>

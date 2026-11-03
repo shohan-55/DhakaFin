@@ -1,0 +1,131 @@
+/* DhakaFin Motion Edition — shared progressive enhancement for all 71 pages.
+   Intent: considered, quiet, finance-grade motion. No dependencies or backend.
+   Static content remains visible if JS is disabled; reduced-motion stays instant. */
+:root {
+  --df-ease: cubic-bezier(.22, 1, .36, 1);
+  --df-spring: cubic-bezier(.2,.8,.2,1);
+}
+/* Tiny reading-progress accent, not another navigation bar */
+#df-reading-progress {
+  position:fixed;z-index:9998;inset:0 0 auto;height:3px;
+  background:linear-gradient(90deg,#1da97e 0%,#bbf5b9 62%,#f2fff0 100%);
+  box-shadow:0 0 12px rgba(78,225,167,.23);
+  transform:scaleX(0);transform-origin:left center;
+  pointer-events:none;will-change:transform;
+}
+/* Hero first impression — staged but restrained. translate avoids clobbering
+   rotations or transforms belonging to the existing dashboard artwork. */
+.df-motion .df-hero-intro {
+  animation:df-hero-entrance 850ms var(--df-ease) both;
+  animation-delay:var(--df-intro-delay, 0ms);
+}
+@keyframes df-hero-entrance {
+  from { opacity:0;translate:0 20px;filter:blur(3px); }
+  to { opacity:1;translate:0 0;filter:blur(0); }
+}
+/* Intersection-controlled reveal: never hidden until JS has checked the viewport. */
+.df-motion .df-queued {
+  opacity:0;
+  translate:0 26px;
+}
+.df-motion .df-reveal {
+  transition:opacity 740ms var(--df-ease),translate 740ms var(--df-ease),
+    transform 280ms var(--df-ease),box-shadow 300ms var(--df-ease),
+    background-color 240ms ease,border-color 240ms ease,color 240ms ease;
+  transition-delay:var(--df-stagger,0ms),var(--df-stagger,0ms),0ms,0ms,0ms,0ms,0ms;
+}
+.df-motion .df-reveal.df-visible {
+  opacity:1;
+  translate:0 0;
+}
+/* gentle lift for elevated user actions, without interrupting other transforms */
+@media (hover:hover) and (pointer:fine) {
+  .df-motion :is(.product,.service,.v9-service-tile,.v9-audience-card,.directory-card,.detail-feature,.v2-visual,.v9-why-item,.insight-card,.work-form,.result-panel,.dash-surface,.drop-card) {
+    backface-visibility:hidden;
+  }
+  .df-motion :is(.v9-service-tile,.directory-card,.detail-feature,.product,.service):hover {
+    box-shadow:0 22px 44px rgba(5,58,39,.13);
+    border-color:rgba(7,130,88,.35);
+  }
+  .df-motion :is(.btn,.primary-btn,.light-btn,.v9-cap-contact,.v2-talk,.v2-portal,.portal,.nav-actions a,.ghost-btn):active {
+    scale:.985;
+  }
+  /* A quiet glossy highlight on primary calls-to-action */
+  .df-motion :is(.btn-mint,.btn-deep,.primary-btn,.light-btn,.v2-talk,.v9-cap-contact) {
+    position:relative;overflow:hidden;isolation:isolate;
+  }
+  .df-motion :is(.btn-mint,.btn-deep,.primary-btn,.light-btn,.v2-talk,.v9-cap-contact)::after {
+    content:"";pointer-events:none;position:absolute;inset:-60% auto -60% -42%;width:35%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+    transform:skewX(-20deg) translateX(-240%);transition:transform 700ms var(--df-ease);
+  }
+  .df-motion :is(.btn-mint,.btn-deep,.primary-btn,.light-btn,.v2-talk,.v9-cap-contact):hover::after {
+    transform:skewX(-20deg) translateX(620%);
+  }
+  .df-motion :is(.navlinks a,.v2-links a,.v2-footer a):not(.btn):not(.v2-brand) {
+    transition:color .25s ease;
+  }
+}
+/* Calm ambient dashboard motion, never affects layout / rotation. */
+@media (min-width:980px) and (hover:hover) {
+  .df-motion .six-panel {animation:df-art-float 10s ease-in-out infinite;}
+  .df-motion .six-float {animation:df-art-float 7.8s ease-in-out infinite reverse;}
+  .df-motion .six-orbit {animation:df-art-float 11.5s ease-in-out infinite;}
+  @keyframes df-art-float {0%,100%{translate:0 0}50%{translate:0 -8px}}
+}
+/* Financial chart draws itself once: illustrative data remains illustrative. */
+.df-motion .df-chart-line {
+  stroke-dasharray:var(--df-path-length);
+  stroke-dashoffset:var(--df-path-length);
+  animation:df-chart-draw 1600ms var(--df-ease) 480ms forwards;
+}
+@keyframes df-chart-draw {to{stroke-dashoffset:0}}
+.df-motion .six-chart circle {animation:df-chart-dot 740ms var(--df-ease) 1900ms both;transform-box:fill-box;transform-origin:center}
+@keyframes df-chart-dot{from{opacity:0;scale:.2}to{opacity:1;scale:1}}
+/* Menu opens with spatial continuity: do not change original display behavior. */
+.df-motion :is(.dropdown.open,.mobile-panel.open,.v2-mobile.open,.v2-menu-panel.open) {
+  animation:df-menu-enter 260ms var(--df-ease) both;
+}
+@keyframes df-menu-enter {from{opacity:0;translate:0 -8px}to{opacity:1;translate:0 0}}
+/* Light shimmer on capability icons, only on user hover */
+@media (hover:hover) and (pointer:fine) {
+  .df-motion :is(.v9-tile-icon,.v9-why-ico,.dir-icon,.pict,.v9-audience-glyph,.detail-icon) {
+    transition:translate .4s var(--df-ease),scale .4s var(--df-ease);
+  }
+  .df-motion :is(.v9-service-tile,.directory-card,.v9-audience-card,.product,.detail-feature):hover
+    :is(.v9-tile-icon,.dir-icon,.pict,.v9-audience-glyph,.detail-icon) {
+    translate:0 -3px;scale:1.045;
+  }
+}
+/* Useful, non-intrusive return-to-top shortcut */
+#df-return-top {
+  position:fixed;right:23px;bottom:23px;z-index:9000;
+  height:44px;width:44px;border:1px solid rgba(168,227,194,.4);border-radius:50%;
+  background:linear-gradient(145deg,#07503c,#04392d);color:#e5ffed;
+  display:grid;place-items:center;box-shadow:0 12px 30px rgba(0,43,30,.19);
+  opacity:0;visibility:hidden;translate:0 13px;
+  transition:opacity .3s ease,visibility .3s,translate .3s var(--df-ease),background .2s;
+  cursor:pointer;pointer-events:none;
+}
+#df-return-top.df-show {opacity:1;visibility:visible;translate:0 0;pointer-events:auto}
+#df-return-top:hover{background:#087354;translate:0 -3px}
+#df-return-top:focus-visible {outline:3px solid #8ee5b2;outline-offset:4px}
+#df-return-top svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:640px){#df-return-top {right:14px;bottom:18px;height:40px;width:40px}}
+@media(prefers-reduced-motion:reduce) {
+  .df-motion .df-hero-intro,.df-motion .df-chart-line,.df-motion .six-chart circle,
+  .df-motion .six-panel,.df-motion .six-float,.df-motion .six-orbit,
+  .df-motion :is(.dropdown.open,.mobile-panel.open,.v2-mobile.open,.v2-menu-panel.open) {
+    animation:none!important;
+  }
+  .df-motion .df-queued,.df-motion .df-reveal,.df-motion .df-reveal.df-visible {
+    opacity:1!important;translate:none!important;transition:none!important;
+  }
+  .df-motion :is(.v9-service-tile,.directory-card,.detail-feature,.product,.service) {transition-duration:0ms!important}
+  #df-return-top {transition:none}
+  #df-reading-progress{will-change:auto}
+}
+@media print {
+  #df-reading-progress,#df-return-top{display:none!important}
+  .df-motion .df-queued,.df-motion .df-reveal {opacity:1!important;translate:none!important;animation:none!important}
+}
