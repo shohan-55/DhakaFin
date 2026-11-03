@@ -113,7 +113,16 @@
     window.addEventListener('scroll', updateScroll, { passive: true });
     updateScroll();
 
-    const appUrl = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, '') || '';
+    const rawAppUrl = document.querySelector('meta[name="app-url"]')?.content?.replace(/\/$/, '') || '';
+    let appUrl = '';
+    if (rawAppUrl) {
+        try {
+            const parsed = new URL(rawAppUrl, window.location.origin);
+            appUrl = parsed.pathname.replace(/\/$/, '');
+        } catch (e) {
+            appUrl = '';
+        }
+    }
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
     const fmtBDT = (num) => {

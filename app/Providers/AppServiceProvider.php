@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Automatically clear any stale compiled Blade views if upgraded over an older version
-        $versionMarker = storage_path('framework/views/.df_v5_hermetic');
+        $versionMarker = storage_path('framework/views/.df_v6_capsule');
         if (!file_exists($versionMarker) && is_dir(dirname($versionMarker))) {
             foreach (glob(storage_path('framework/views/*.php')) ?: [] as $compiled) {
                 @unlink($compiled);
